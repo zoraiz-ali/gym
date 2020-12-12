@@ -15,7 +15,7 @@ class RobotWorld:
             value is the number of grids on the x axis, and the second
             for the y axis.
 
-        :param Union[None, Dict[Tuple[int, int], str]} mapping:
+        :param Union[None, Dict[Tuple[int, int], str]] mapping:
             Contains the information about non empty squares in the world.
             The keys represent the location of the sprite in x, y coordinates
             and the value is the sprite image name (without extension).
