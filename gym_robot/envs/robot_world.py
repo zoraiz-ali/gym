@@ -30,6 +30,7 @@ class RobotWorld:
         height = self.size.height * constants.SIZE_SQUARE
         width = self.size.width * constants.SIZE_SQUARE
         self._image = np.zeros((height, width, 4), dtype=np.uint8)
+        self._grid = np.zeros(size, dtype=np.uint8)
 
     @classmethod
     def from_tuple(cls, size=constants.WORLD_SIZE, mapping=None):
@@ -52,7 +53,7 @@ class RobotWorld:
     @property
     def agents(self) -> List[Location]:
         """ Return all fields locations that contain an agent.  """
-        return [square.location for square in self.world]
+        return [square.location for square in self.world if square.sprite_name.startswith('agent')]
 
     @staticmethod
     def _create_world(mapping: Dict[Tuple[int, int], str]) -> List[Square]:
@@ -80,6 +81,22 @@ class RobotWorld:
         self._image[::size, :] = (0, 0, 0, 1)
         self._image[:, ::size] = (0, 0, 0, 1)
         return self._image
+
+    def grid(self):
+        """ 
+            Returns a world size grid, representing the world. 
+            The values are as follows:
+            
+            0: Passable terrain
+            1: Immovable objects (blocked terrain)
+            2: You the agent
+            3: The final goal of the agent
+        """
+        self._grid.fill(0)
+        for objects, value in [(self.immovable, 1), (self.agents, 2), (self.flag, 3)]:
+            for loc in objects:
+                self._grid[loc.x, loc.y] = value
+        return self._grid
 
     def reset(self):
         """ Returns the world to the original start state.  """
