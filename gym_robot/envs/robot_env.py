@@ -2,7 +2,7 @@ import gym
 import numpy as np
 
 from gym_robot.envs.helper import constants
-from gym_robot.envs.robot_world import World
+from gym_robot.envs.robot_world import RobotWorld
 
 
 class RobotEnv(gym.Env):
@@ -17,7 +17,7 @@ class RobotEnv(gym.Env):
 
     def __init__(self, world_size=(9, 9)):
         self.world_size = world_size
-        self.world = World(size=world_size)
+        self.world = RobotWorld(size=world_size)
         self.observation_space = gym.spaces.Box(0, 255, shape=np.array(world_size) * constants.SIZE_SQUARE)
 
     def reset(self):
@@ -49,17 +49,3 @@ class RobotEnv(gym.Env):
 
     def close(self):
         self.world.close()
-
-
-if __name__ == '__main__':
-    env = RobotEnv()
-
-    for episode in range(1, 101):
-        env.reset()
-        done = False
-        score = 0
-        while not done:
-            obs, reward, done, info = env.step(env.action_space.sample())
-            env.render(delay=1000 / constants.FPS)
-            score += reward
-        print(f"Finished episode {episode:4d}, with a score of {score}")

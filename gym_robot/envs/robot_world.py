@@ -3,11 +3,10 @@ import numpy as np
 
 from typing import Tuple, Dict, List
 
-from gym_robot.envs import constants
-from gym_robot.envs.helper import Size, Location, Square
+from gym_robot.envs.helper import constants, Size, Location, Square
 
 
-class World:
+class RobotWorld:
     """
         Represent the robot world environment.
 
@@ -96,8 +95,3 @@ class World:
 
     def close(self):
         cv2.destroyWindow(constants.CAPTION)
-
-
-if __name__ == '__main__':
-    world = World()
-    world.render(delay=0)
