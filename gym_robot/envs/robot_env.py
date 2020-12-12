@@ -25,7 +25,7 @@ class RobotEnv(gym.Env):
 
     def reset(self):
         self.world.reset()
-        return self.world.image()
+        return self._get_obs(self.obs_mode)
 
     def render(self, mode="human", delay=1):
         if mode == 'human':
