@@ -31,7 +31,7 @@ class RobotEnv(gym.Env):
         if mode == 'human':
             return self.world.render(delay=delay)
         if mode == 'rgb_array':
-            return self.world.image()
+            return self._get_obs(self.obs_mode)
         raise ValueError(f"Unknown mode {mode!r}, valid modes: {self.metadata['render.modes']}")
 
     def step(self, action: int):
