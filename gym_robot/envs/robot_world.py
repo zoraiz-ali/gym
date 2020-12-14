@@ -3,7 +3,7 @@ import numpy as np
 
 #from typing import Tuple, Dict, List
 
-#from gym_robot.envs.helper import constants, Size, Location, Square
+from gym_robot.envs.helper import constants, Size, Location, Square
 from typing import Dict, Tuple
 
 CAPTION = 'Deep Q-learning. Zoraiz Ali'
@@ -34,7 +34,7 @@ from pathlib import Path
 from dataclasses import dataclass
 from PIL import Image
 
-#from gym_robot.envs.helper import constants
+from gym_robot.envs.helper import constants
 
 
 @dataclass
