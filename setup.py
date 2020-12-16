@@ -10,7 +10,7 @@ setup(
         url="https://github.com/zoraiz-ali/gym.git",
         author="Zoraiz Ali, T.D.J. Rijpkema",
         license="MIT",
-        packages=["gym_robot", "gym_robot.envs", "gym_robot.envs.helper", "gym_robot.envs.images",],
+        packages=["gym_robot", "gym_robot.envs", ],
 
         install_requires=["gym", "numpy", "opencv-python"]
 )
