@@ -11,6 +11,6 @@ setup(
         author="Zoraiz Ali, T.D.J. Rijpkema",
         license="MIT",
         packages=["gym_robot", "gym_robot.envs", "gym_robot.envs.helper", ],
-
-        install_requires=["gym", "numpy", "opencv-python"]
+        include_package_data=True,
+        install_requires=["gym", "numpy", "opencv-python", "pillow"]
 )
