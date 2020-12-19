@@ -26,6 +26,7 @@ class RobotWorld:
         self.size: Size = Size(*size)
         self.mapping = mapping if mapping is not None else constants.MAP
         self.world = self._create_world(self.mapping)
+        self.render_in_background = False
 
         height = self.size.height * constants.SIZE_SQUARE
         width = self.size.width * constants.SIZE_SQUARE
@@ -106,8 +107,15 @@ class RobotWorld:
         """ Renders the image of the world (note cv2 uses BGR instead of RGB).  """
         image = image if image is not None else self.image()
         image_bgr = cv2.cvtColor(image, cv2.COLOR_RGBA2BGR)
-        cv2.imshow(constants.CAPTION, image_bgr)
-        cv2.waitKey(int(delay))
+
+        if not self.render_in_background:
+            cv2.imshow(constants.CAPTION, image_bgr)
+            cv2.waitKey(int(delay))
+
+        # When you destroy the window using the `X` button, the game will run in the background instead.
+        if cv2.getWindowProperty(constants.CAPTION, 0) == -1:
+            self.render_in_background = True
+
         return image
 
     def close(self):
