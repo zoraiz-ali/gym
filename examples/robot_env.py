@@ -28,8 +28,9 @@ def run(env, nr_games=100, render=True, fps=None):
             if render: env.render(delay=(1000 / fps) if fps is not None else 1)
             score += reward
             frames += 1
-            print(f"\r\tRunning episode: {episode:4d}, steps: {frames:5d}, score: {score: 4d}", end='')
-        print(f"\rFinished episode {episode:4d} in {frames:5d} steps, with a score of {score: 4d}")
+            print(f"\r\tRunning episode: {episode:4d}, steps: {frames:5d}, score: {score: 5d}", end='')
+        print(f"\rFinished episode {episode:4d} in {frames:5d} steps, with a score of {score: 5d}")
+    print(f"Finished run", end="\n\n")
 
 
 if __name__ == '__main__':
