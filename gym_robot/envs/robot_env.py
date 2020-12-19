@@ -21,7 +21,10 @@ class RobotEnv(gym.Env):
         self.obs_mode = obs_mode
 
         self.world = RobotWorld(size=world_size)
-        self.observation_space = gym.spaces.Box(0, 255, shape=np.array(world_size) * constants.SIZE_SQUARE)
+
+        self.observation_space = gym.spaces.Box(0, 255, shape=(*np.array(world_size) * constants.SIZE_SQUARE, 3))
+        if obs_mode == "grid":
+            self.observation_space = gym.spaces.Box(0, 3, shape=world_size)
 
     def reset(self):
         self.world.reset()
