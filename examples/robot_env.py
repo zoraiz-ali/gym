@@ -22,11 +22,14 @@ def run(env, nr_games=100, render=True, fps=None):
         env.reset()
         done = False
         score = 0
+        frames = 0
         while not done:
             obs, reward, done, info = env.step(env.action_space.sample())
             if render: env.render(delay=(1000 / fps) if fps is not None else 1)
             score += reward
-        print(f"Finished episode {episode:4d}, with a score of {score}")
+            frames += 1
+            print(f"\r\tRunning episode: {episode:4d}, steps: {frames:5d}, score: {score: 4d}", end='')
+        print(f"\rFinished episode {episode:4d} in {frames:5d} steps, with a score of {score: 4d}")
 
 
 if __name__ == '__main__':
