@@ -6,8 +6,6 @@ from typing import Tuple, Dict, List
 from gym_robot.envs.helper import constants, Size, Location, Square
 
 
-
-
 class RobotWorld:
     """
         Represent the robot world environment.
