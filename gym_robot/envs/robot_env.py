@@ -11,8 +11,8 @@ class RobotEnv(gym.Env):
         "obs.modes": ["grid", "image"]
     }
 
-    action_meanings = dict(NOOP=0, UP=1, DOWN=2, lEFT=3, RIGHT=4)
-    action_directions = [(0, 0), (0, -1), (0, 1), (-1, 0), (1, 0)]
+    action_meanings = dict(UP=1, DOWN=2, lEFT=3, RIGHT=4)
+    action_directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
 
     action_space = gym.spaces.Discrete(len(action_meanings))
 
