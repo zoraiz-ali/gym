@@ -11,8 +11,8 @@ class RobotEnv(gym.Env):
         "obs.modes": ["grid", "image"]
     }
 
-    action_meanings = dict(NOOP=0, UP=1, DOWN=2, lEFT=3, RIGHT=4)
-    action_directions = [(0, 0), (0, -1), (0, 1), (-1, 0), (1, 0)]
+    action_meanings = dict(UP=1, DOWN=2, lEFT=3, RIGHT=4)
+    action_directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
 
     action_space = gym.spaces.Discrete(len(action_meanings))
 
@@ -21,11 +21,11 @@ class RobotEnv(gym.Env):
         self.obs_mode = obs_mode
 
         self.world = RobotWorld(size=world_size)
-        #self.observation_space = gym.spaces.Box(0, 255, shape=np.array(world_size) * constants.SIZE_SQUARE)
-        if obs_mode == "image":
-             self.observation_space = gym.spaces.Box(0, 255, shape=(*np.array(world_size) * constants.SIZE_SQUARE, 3))
-        else:
-             self.observation_space = gym.spaces.Box(0, 8, shape=world_size)
+
+        self.observation_space = gym.spaces.Box(0, 255, shape=(*np.array(world_size) * constants.SIZE_SQUARE, 3))
+        if obs_mode == "grid":
+            self.observation_space = gym.spaces.Box(0, 3, shape=world_size)
+
     def reset(self):
         self.world.reset()
         return self._get_obs(self.obs_mode)
@@ -41,15 +41,13 @@ class RobotEnv(gym.Env):
         agent = self.world.agents[0]
         agent.add(self.action_directions[action])
 
-        # Restore agent position if going out of bounds
-        if not agent.in_bounds(self.world_size):
-            agent.sub(self.action_directions[action])
-
         if agent in self.world.flag:
             return self._get_obs(self.obs_mode), 1, True, dict()
 
+        # Restore agent position if going out of bounds or through buildings.
         if agent in self.world.immovable or not agent.in_bounds(self.world_size):
-            return self._get_obs(self.obs_mode), -1, True, dict()
+            agent.sub(self.action_directions[action])
+            return self._get_obs(self.obs_mode), -1, False, dict()
 
         return self._get_obs(self.obs_mode), 0, False, dict()
 
