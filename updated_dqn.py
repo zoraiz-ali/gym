@@ -38,8 +38,7 @@ class DQNAgent:
 ### build our model
 
     def _build_model(self):
-        model = Sequential()
-        model.add(Flatten())
+        model = Sequential()        
         model.add(Dense(24, input_shape=(self.state_size,), activation='relu'))
         model.add(Dense(24, activation='relu'))
         model.add(Dense(24, activation='relu'))
