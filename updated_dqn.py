@@ -70,9 +70,9 @@ class DQNAgent:
             target = reward
             if not done:
                 target = (reward + self.gamma *
-                          np.amax(self.model.predict(next_state)[0]))
+                          np.amax(self.model.predict(next_state)))
             target_f = self.model.predict(state)
-            target_f[0][action] = target
+            target_f[action] = target
             self.model.fit(state, target_f, epochs=1, verbose=0)
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
@@ -87,7 +87,7 @@ class DQNAgent:
         
 if __name__ == "__main__":
     env = gym.make('robot-v1')
-    state_size = env.observation_space.shape[0]
+    state_size = env.observation_space.shape
     action_size = env.action_space.n
     agent = DQNAgent(state_size, action_size)
     agent.model.summary()
