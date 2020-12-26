@@ -40,12 +40,17 @@ class RobotEnv(gym.Env):
     def step(self, action: int):
         agent = self.world.agents[0]
         agent.add(self.action_directions[action])
-
+                         
+        # Restore agent position if going out of bounds
+        if not agent.in_bounds(self.world_size):
+            agent.sub(self.action_directions[action])                 
+                         
         if agent in self.world.flag:
             return self._get_obs(self.obs_mode), 1, True, dict()
 
         # Restore agent position if going out of bounds or through buildings.
         if agent in self.world.immovable or not agent.in_bounds(self.world_size):
+            return self._get_obs(self.obs_mode), -1, True, dict()             
             agent.sub(self.action_directions[action])
             return self._get_obs(self.obs_mode), -1, False, dict()
 
