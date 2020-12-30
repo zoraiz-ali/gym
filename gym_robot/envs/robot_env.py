@@ -27,7 +27,7 @@ class RobotEnv(gym.Env):
             #self.observation_space = gym.spaces.Box(0, 3, shape=world_size)           
             low = np.zeros(len(self.world_size), dtype=int)
             high =  np.array(self.world_size, dtype=int) - np.ones(len(self.world_size), dtype=int)
-            self.observation_space = gym.spaces.Box(low, high, shape=world_size dtype=np.int64)
+            self.observation_space = gym.spaces.Box(low, high, shape=world_size, dtype=np.int64)
 
     def reset(self):
         self.world.reset()
