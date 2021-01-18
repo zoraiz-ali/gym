@@ -1,5 +1,3 @@
-
-
 import random
 import gym
 import gym_robot   
@@ -10,13 +8,9 @@ from collections import deque
 from keras.models import Sequential
 from keras.layers import Dense, Flatten
 from keras.optimizers import Adam
+import matplotlib.pyplot as plt
 
-EPISODES = 1001
-
-
-
-
-
+EPISODES = 1000
 
 class DQNAgent:
     def __init__(self, state_size, action_size):
@@ -30,7 +24,7 @@ class DQNAgent:
         self.epsilon = 1.0
         self.epsilon_decay = 0.995
         self.epsilon_min = 0.01
-        self.learning_rate= 0.001
+        self.learning_rate= 0.01
         self.model = self._build_model()
         #self.model = OurModel(input_shape=(self.state_size), action_space = self.action_size)
     
@@ -38,13 +32,14 @@ class DQNAgent:
 ### build our model
 
     def _build_model(self):
-        model = Sequential()        
-        model.add(Dense(24, input_shape=(self.state_size,), activation='relu'))
-        model.add(Dense(24, activation='relu'))
-        model.add(Dense(24, activation='relu'))
-        model.add(Dense(self.action_size, activation= 'linear'))
+        model = Sequential()
+        model.add(Flatten(input_shape=self.state_size))
+        model.add(Dense(512, activation='relu'))
+        model.add(Dense(256, activation='relu'))
+        model.add(Dense(64, activation='relu'))
+        model.add(Dense(self.action_size, activation='linear'))
 
-        model.compile(loss= 'mse', optimizer = Adam(lr = self.learning_rate))
+        model.compile(loss='mse', optimizer=Adam(lr=self.learning_rate))
         return model
       
     def memorize(self, state, action, reward, next_state, done):
@@ -53,12 +48,10 @@ class DQNAgent:
 # what action to take at given state
     def act(self, state):
         if np.random.rand() <= self.epsilon:
-            return random.randrange(self.action_size)
-            print(random.randrange(self.action_size))
-        act_values = self.model.predict(state)
-        for items in act_values:
-            print(items)
-        return np.argmax(act_values[0])
+            return random.randrange(self.action_size)            
+        act_values = self.model.predict(state)        
+        return np.argmax(act_values)
+        
         
     
 # define method to train our agent
@@ -71,7 +64,7 @@ class DQNAgent:
                 target = (reward + self.gamma *
                           np.amax(self.model.predict(next_state)))
             target_f = self.model.predict(state)
-            target_f[action] = target
+            target_f[0][action] = target
             self.model.fit(state, target_f, epochs=1, verbose=0)
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
@@ -82,23 +75,25 @@ class DQNAgent:
     def save (self, name):
         self.model.save_weights(name)    
         
+    # Plotting the results for the number of steps
     
-        
+       
 if __name__ == "__main__":
     env = gym.make('robot-v1')
     state_size = env.observation_space.shape
     action_size = env.action_space.n
     agent = DQNAgent(state_size, action_size)
-    agent.model.summary()
+    #agent.model.summary()
     done = False
     batch_size = 32
 
     for e in range(EPISODES):
         state = env.reset()
-        state = np.reshape(state, [1,9, 9])
+        state = np.reshape(state, [1, 9,9])
         done = False
         score = 0
-        frames = 0
+        steps = 0
+        cost = 0
         while not done:
             env.render()
             action = agent.act(state)
@@ -107,15 +102,16 @@ if __name__ == "__main__":
             if not done: 
                 reward = reward
             score += reward
-            frames += 1
+            steps += 1
             
-            next_state = np.reshape(next_state, [1, 9, 9])
+            next_state = np.reshape(next_state, [1, 9,9])
             agent.memorize(state, action, reward, next_state, done)
             state = next_state
             if done:
                 print("episode: {}/{}, step: {}, e: {:.2}"
-                      .format(e, EPISODES, frames, agent.epsilon))
+                      .format(e, EPISODES, steps, agent.epsilon))
+                
+                
                 break
             if len(agent.memory) > batch_size:
                 agent.replay(batch_size)
-       
