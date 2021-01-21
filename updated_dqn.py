@@ -10,7 +10,12 @@ from keras.layers import Dense, Flatten
 from keras.optimizers import Adam
 import matplotlib.pyplot as plt
 
-EPISODES = 1000
+EPISODES = 10
+
+
+
+
+
 
 class DQNAgent:
     def __init__(self, state_size, action_size):
@@ -18,13 +23,13 @@ class DQNAgent:
         self.action_size = action_size
    
    #we make memory to train our agent
-        self.memory = deque(maxlen = 2000)
+        self.memory = deque(maxlen = 200000)
 
         self.gamma = 0.95
-        self.epsilon = 1.0
+        self.epsilon = 0.9
         self.epsilon_decay = 0.995
         self.epsilon_min = 0.01
-        self.learning_rate= 0.01
+        self.learning_rate= 0.5
         self.model = self._build_model()
         #self.model = OurModel(input_shape=(self.state_size), action_space = self.action_size)
     
@@ -66,8 +71,8 @@ class DQNAgent:
             target_f = self.model.predict(state)
             target_f[0][action] = target
             self.model.fit(state, target_f, epochs=1, verbose=0)
-        if self.epsilon > self.epsilon_min:
-            self.epsilon *= self.epsilon_decay
+        #if self.epsilon > self.epsilon_min:
+            #self.epsilon *= self.epsilon_decay
     
     def load (self, name):
         self.model.load_weights(name)
@@ -76,7 +81,17 @@ class DQNAgent:
         self.model.save_weights(name)    
         
     # Plotting the results for the number of steps
-    
+    def plot_results(self, steps):
+                  
+                    #
+                    plt.figure()
+                    plt.plot(np.arange(len(steps_per_episode)),steps_per_episode, 'b')
+                    plt.title('Episode via steps')
+                    plt.xlabel('EPISODES')
+                    plt.ylabel('steps')      
+
+                   # Showing the plots
+                    plt.show()
        
 if __name__ == "__main__":
     env = gym.make('robot-v1')
@@ -86,32 +101,35 @@ if __name__ == "__main__":
     #agent.model.summary()
     done = False
     batch_size = 32
-
-    for e in range(EPISODES):
+    steps_per_episode = []
+    for episode in range(1001):
         state = env.reset()
         state = np.reshape(state, [1, 9,9])
         done = False
         score = 0
-        steps = 0
+        i = 0
         cost = 0
-        while not done:
+        while not done :
             env.render()
             action = agent.act(state)
             next_state, reward, done, _ = env.step(action)
-           
+            i += 1
             if not done: 
                 reward = reward
             score += reward
-            steps += 1
             
+                
             next_state = np.reshape(next_state, [1, 9,9])
             agent.memorize(state, action, reward, next_state, done)
             state = next_state
             if done:
-                print("episode: {}/{}, step: {}, e: {:.2}"
-                      .format(e, EPISODES, steps, agent.epsilon))
+                steps_per_episode.append(i)
+                print("episode: {},step:{}, step: {}, e: {:.2}"
+                      .format(episode, i, steps_per_episode,agent.epsilon))
                 
                 
                 break
             if len(agent.memory) > batch_size:
                 agent.replay(batch_size)
+agent.plot_results( steps_per_episode)          
+       
