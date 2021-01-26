@@ -35,13 +35,7 @@ class RobotEnv(gym.Env):
         self.visited = []
         return self._get_obs(self.obs_mode)
 
-    """def set_eval(self):
-        # print('Evaluation')
-        self.eval_mode = True
-
-    def set_train(self):
-        # print('Training')
-        self.eval_mode = False"""
+    
 
     def render(self, mode="human", delay=1):
         if mode == 'human':
@@ -67,24 +61,7 @@ class RobotEnv(gym.Env):
             agent.sub(self.action_directions[action])
             return self._get_obs(self.obs_mode), -1, False, dict()
 
-        """# Visited Nodes rendering
-        if self.eval_mode:
-            if not self.visited:  # append the initial position
-                self.visited.append((0, 0))
-            else:  # append all visited nodes
-                if (agent.x, agent.y) not in self.visited:
-                    self.visited.append((agent.x, agent.y))
-            # Check if we need to update the world with the visited nodes
-            for node in self.visited:
-                if any(element.location.x == node[0] and element.location.y == node[1] and element.sprite_name == 'tree_1'
-                       for element in self.world.world):
-                    continue
-                else:
-                    self.world.world.append(Square(location=node, sprite_name='tree_1'))
-            # pop the current node from the visited list to render the robot correctly
-            for cnt, element in enumerate(self.world.world):
-                if element.location.x == agent.x and element.location.y == agent.y and element.sprite_name == 'tree_1':
-                    self.world.world.pop(cnt)"""
+        
         return self._get_obs(self.obs_mode), 0, False, dict()
 
     def _get_obs(self, mode='grid'):
