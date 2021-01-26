@@ -3,7 +3,6 @@ import numpy as np
 
 from gym_robot.envs.helper import constants
 from gym_robot.envs.robot_world import RobotWorld
-from gym_robot.envs.helper import Location, Square
 
 
 class RobotEnv(gym.Env):
@@ -11,7 +10,7 @@ class RobotEnv(gym.Env):
         "render.modes": ["human", "rgb_array"],
         "obs.modes": ["grid", "image"]
     }
-    visited = []
+
     action_meanings = dict(UP=1, DOWN=2, lEFT=3, RIGHT=4)
     action_directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
 
@@ -20,22 +19,19 @@ class RobotEnv(gym.Env):
     def __init__(self, world_size=(9, 9), obs_mode="image"):
         self.world_size = world_size
         self.obs_mode = obs_mode
-        self.eval_mode = False
+
         self.world = RobotWorld(size=world_size)
 
         self.observation_space = gym.spaces.Box(0, 255, shape=(*np.array(world_size) * constants.SIZE_SQUARE, 3))
         if obs_mode == "grid":
-            self.observation_space = gym.spaces.Box(0, 3, shape=world_size)
-            # low = np.zeros(len(self.world_size), dtype=int)
-            # high =  np.array(self.world_size, dtype=int) - np.ones(len(self.world_size), dtype=int)
-            # self.observation_space = gym.spaces.Box(low, high,  dtype=np.int64)
+            self.observation_space = gym.spaces.Box(0, 3, shape=world_size)           
+            #low = np.zeros(len(self.world_size), dtype=int)
+            #high =  np.array(self.world_size, dtype=int) - np.ones(len(self.world_size), dtype=int)
+            #self.observation_space = gym.spaces.Box(low, high,  dtype=np.int64)
 
     def reset(self):
         self.world.reset()
-        self.visited = []
         return self._get_obs(self.obs_mode)
-
-    
 
     def render(self, mode="human", delay=1):
         if mode == 'human':
@@ -47,21 +43,20 @@ class RobotEnv(gym.Env):
     def step(self, action: int):
         agent = self.world.agents[0]
         agent.add(self.action_directions[action])
-
+                         
         # Restore agent position if going out of bounds
         if not agent.in_bounds(self.world_size):
-            agent.sub(self.action_directions[action])
-
+            agent.sub(self.action_directions[action])                 
+                         
         if agent in self.world.flag:
-            return self._get_obs(self.obs_mode), 100, True, dict()
+            return self._get_obs(self.obs_mode), 1, True, dict()
 
         # Restore agent position if going out of bounds or through buildings.
         if agent in self.world.immovable or not agent.in_bounds(self.world_size):
-            return self._get_obs(self.obs_mode), -1, False, dict()             
+            return self._get_obs(self.obs_mode), -1, True, dict()             
             agent.sub(self.action_directions[action])
             return self._get_obs(self.obs_mode), -1, False, dict()
 
-        
         return self._get_obs(self.obs_mode), 0, False, dict()
 
     def _get_obs(self, mode='grid'):
