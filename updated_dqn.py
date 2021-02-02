@@ -11,11 +11,6 @@ from keras.layers import Dense, Flatten
 from keras.optimizers import Adam
 import matplotlib.pyplot as plt
 
-EPISODES = 10
-
-
-
-
 
 
 class DQNAgent:
