@@ -49,7 +49,7 @@ class RobotEnv(gym.Env):
             agent.sub(self.action_directions[action])                 
                          
         if agent in self.world.flag:
-            return self._get_obs(self.obs_mode), 1, True, dict()
+            return self._get_obs(self.obs_mode), 100, True, dict()
 
         # Restore agent position if going out of bounds or through buildings.
         if agent in self.world.immovable or not agent.in_bounds(self.world_size):
