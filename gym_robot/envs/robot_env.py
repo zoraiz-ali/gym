@@ -16,7 +16,7 @@ class RobotEnv(gym.Env):
 
     action_space = gym.spaces.Discrete(len(action_meanings))
 
-    def __init__(self, world_size=(9, 9), obs_mode="image"):
+    def __init__(self, world_size=(11, 11), obs_mode="image"):
         self.world_size = world_size
         self.obs_mode = obs_mode
 
