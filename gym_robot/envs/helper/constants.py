@@ -2,18 +2,19 @@ from typing import Dict, Tuple
 
 CAPTION = 'Deep Q-learning. Zoraiz Ali'
 
-WORLD_SIZE = (9, 9)
+WORLD_SIZE = (11, 11)
 SIZE_SQUARE = 40
 FPS = 30
 
 MAP: Dict[Tuple[int, int], str] = {
-    (0, 0): 'agent_1', (0, 1): 'building_2', (0, 5): 'bank_2', (0, 8): 'tree_2',
-    (1, 7): 'shop',
-    (2, 0): 'road_closed_2', (2, 3): 'tree_1',
-    (3, 2): 'tree_1', (3, 5): 'road_closed_3', (3, 7): 'pedestrian', (3, 8): 'traffic_lights',
-    (4, 0): 'road_closed_1', (4, 3): 'tree_1',
-    (5, 5): 'building_1', (5, 6): 'building_1', (5, 7): 'building_1',
-    (6, 1): 'bank_1', (6, 5): 'building_1', (6, 6): 'flag', (6, 7): 'building_1',
-    (7, 3): 'traffic_lights', (7, 5): 'building_1', (7, 7): 'building_1',
-    (8, 0): 'tree_2',
+    (0, 0): 'agent_1', (0, 3): 'road_closed_1', (0, 4): 'road_closed_1', (0, 5): 'road_closed_1', (0, 6): 'road_closed_1',(0, 7): 'road_closed_1',
+    (1, 3): 'road_closed_1', (1, 4): 'road_closed_1', (1, 5): 'road_closed_1', (1, 6): 'road_closed_1', (1, 7): 'road_closed_1',
+    (2, 3): 'road_closed_1', (2, 4): 'road_closed_1', (2, 5): 'road_closed_1', (2, 6): 'road_closed_1', (2, 7): 'road_closed_1',
+    (3, 3): 'road_closed_1', (3, 4): 'road_closed_1', (3, 5): 'road_closed_1', (3, 6): 'road_closed_1', (3, 7): 'road_closed_1',
+    (4, 3): 'road_closed_1', (4, 4): 'road_closed_1', (4, 5): 'road_closed_1', (4, 6): 'road_closed_1', (4, 7): 'road_closed_1',
+    (6, 3): 'road_closed_1', (6, 4): 'road_closed_1', (6, 5): 'road_closed_1', (6, 6): 'road_closed_1', (6, 7): 'road_closed_1',
+    (7, 3): 'road_closed_1', (7, 4): 'road_closed_1', (7, 5): 'road_closed_1', (7, 6): 'road_closed_1', (7, 7): 'road_closed_1',
+    (8, 3): 'road_closed_1', (8, 4): 'road_closed_1', (8, 5): 'road_closed_1', (8, 6): 'road_closed_1', (8, 7): 'road_closed_1',
+    (9, 3): 'road_closed_1', (9, 4): 'road_closed_1', (9, 5): 'road_closed_1', (9, 6): 'road_closed_1', (9, 7): 'road_closed_1',
+    (10, 3): 'road_closed_1', (10, 4): 'road_closed_1', (10, 5): 'road_closed_1', (10, 6): 'road_closed_1', (10, 7): 'road_closed_1',  (10, 10): 'flag',
 }
