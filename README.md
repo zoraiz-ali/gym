@@ -13,4 +13,4 @@ the robot will be placed back, so a noop action would be executed.
 Whenever the robot reaches the flag, the reward is 1. Hitting any other object would result in a reward of -1. For
 walking around and doing nothing a reward of 0 is supplied.
 
-![Example of the environment.](image/img.png)
+![Example of the environment.]()
