@@ -30,7 +30,7 @@ class DQNAgent:
         #self.model = OurModel(input_shape=(self.state_size), action_space = self.action_size)
     
     
-### build our model
+
 
     def _build_model(self):
         model = Sequential()
@@ -45,7 +45,7 @@ class DQNAgent:
     def memorize(self, state, action, reward, next_state, done):
         self.memory.append(( state, action, reward, next_state, done))     
     
-# what action to take at given state
+
     def act(self, state):
         if np.random.rand() <= self.epsilon:
             return random.randrange(self.action_size)            
@@ -54,7 +54,7 @@ class DQNAgent:
         
         
     
-# define method to train our agent
+
     def replay(self, batch_size):
         minibatch = random.sample(self.memory, batch_size)
         
@@ -75,7 +75,7 @@ class DQNAgent:
     def save (self, name):
         self.model.save_weights(name)    
         
-    # Plotting the results for the number of steps
+   
     def plot_results(self, steps, score):
                   
                     #
