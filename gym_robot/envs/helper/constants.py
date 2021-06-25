@@ -3,7 +3,7 @@ from typing import Dict, Tuple
 CAPTION = 'Deep Q-learning. Zoraiz Ali'
 
 WORLD_SIZE = (9, 9)
-SIZE_SQUARE = 30
+SIZE_SQUARE = 40
 FPS = 30
 
 MAP: Dict[Tuple[int, int], str] = {
